@@ -4,14 +4,11 @@ from polymarket import Polymarket
 def main():
     # Fetch data
     pmarket = Polymarket()
-    markets = pmarket.get_markets()
-    print(markets)
-    series = pmarket.get_series()
-    print(series)
-    events = pmarket.get_events()
-    print(events)
-    categories = pmarket.get_categories()
-    print(categories)
+    markets = pmarket.get_markets(max_records=100)
+    enabled_markets = markets.query("enable_order_book == True")
+    for _, market in enabled_markets.iterrows():
+        arbitrage_value = pmarket.check_arbitrage(market["tokens"])
+        print(f"{market["question"]} {arbitrage_value}")
 
 
 if __name__ == "__main__":
