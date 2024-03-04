@@ -6,6 +6,11 @@ import requests
 import pandas as pd
 
 QUERY_URL = "https://clob.polymarket.com/"
+HEADER = {"User-Agent": "py_clob_client",
+          "Accept": "*/*",
+          "Connection": "keep-alive",
+          "Content-Type": "application/json",
+          "Accept-Encoding": "gzip"}
 
 
 class Polymarket():
@@ -56,7 +61,7 @@ class Polymarket():
         if next_cursor is not None:
             params["next_cursor"] = next_cursor
         #print(f"Sending request to {url} with params {params}")
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=HEADER, params=params)
         if response.status_code == 200:
             return response.json()
         else:
